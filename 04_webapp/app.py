@@ -1,8 +1,7 @@
 import web
 urls = (
     '/', 'Index',
-    '/login', 'Login',
-    '/respuesta', 'Redspuesta'
+    '/bienvenida', 'Bienvenida'    
 )
 app = web.application(urls, globals())
 render = web.template.render('views')
@@ -10,13 +9,9 @@ render = web.template.render('views')
 class Index:
     def GET(self):
         return render.index()
-class Login:
+class Bienvenida:
     def GET(self):
-        return render.authentication.login()
-class Respuesta:
-    def GET(self):
-        respuesta = "Holiiii"
-        return render.chat(respuesta)
+        return render.bienvenida()
 
 if __name__ == "__main__":
     app.run()
