@@ -1,9 +1,9 @@
 import web
 urls = (
-    '/', 'Index'
+    "/", "Index"
 )
 app = web.application(urls, globals())
-render = web.template.render('views')
+render = web.template.render("views", base="master")
 
 class Index:
     def GET(self):

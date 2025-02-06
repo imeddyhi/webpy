@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
+    <head>
+        <title>index</title>
+    </head>
     <body>
-        $for i in range(5):
-            <h$i>Encabezado $i</h$i>
         $for o in range(6):
-            <p>Párrafo $o</p>
+            $if o == 2:
+                $continue
+            $elif o == 3:
+                <p>Encabezado TRES</p>
+            $else:
+                <p>Encabezado $o</p>
     </body>
 </html>
