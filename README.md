@@ -9,7 +9,7 @@ python3 -m venv .venv
 ## 2. Activar un ambiente virtual
 
 ```zsh
-source '/workspaces/webpy/.venv/bin/activate'
+source '.venv/bin/activate'
 ```
 
 ## 3. Salir de virtual environment 

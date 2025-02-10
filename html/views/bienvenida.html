@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BabyChat</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #d7d7d7a3;
+    }
+
+    #app {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    #header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(to right, rgba(0, 85, 255, 0.8), rgba(0, 85, 255, 0.5), rgba(0, 85, 255, 0.8));
+        padding: 10px 15px;
+        border-radius: 50px;
+        height: 45px;
+        margin: 10px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    #header button {
+        background-color: #ffffff;
+        color: black;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+    }
+
+    #header button:hover {
+        background-color: #f0f0f0;
+        transform: scale(0.95);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    #header button:active {
+        transition: transform 0.4s ease, box-shadow 0.3s ease;
+        transform: scale(1.2);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #header h1 {
+        color: #ffffff;
+    }
+
+    #chat-container {
+        flex-grow: 1;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - 110px);
+        overflow-y: hidden;
+    }
+
+    #chat-messages {
+        flex-grow: 1;
+        overflow-y: scroll;
+        padding: 15px;
+        background-color: white;
+        filter: none;
+        transition: filter 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        border-radius: 15px;
+        margin: 10px;
+        box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.414);
+        overflow-y: scroll;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* Internet Explorer 10+ */
+    }
+
+    .message {
+        max-width: 70%;
+        padding: 10px;
+        margin: 5px;
+        border-radius: 20px;
+        word-wrap: break-word;
+        position: relative;
+    }
+
+    .user-message {
+        background-color: #007bff;
+        color: white;
+        align-self: flex-end;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0px 3px 7px rgba(0, 85, 255, 0.414);
+    }
+
+    .bot-message {
+        background-color: #dcdcdc;
+        align-self: flex-start;
+        box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.414);
+    }
+
+    #message-input {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #d7d7d7a3;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.414);
+        margin-left: 10px;
+        margin-right: 10px;
+        position: sticky;
+        bottom: 0;
+    }
+
+    #message-input input[type="text"] {
+        flex-grow: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 20px;
+        outline: none;
+        word-wrap: break-word;
+    }
+
+    #message-input button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 20px;
+        margin-left: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #message-input button:hover {
+        background-color: #023168;
+        transform: scale(0.95);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #message-input button:active {
+        transition: transform 0.4s ease, box-shadow 0.3s ease;
+        transform: scale(1.5);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #sidebar {
+        position: absolute;
+        top: 0;
+        left: -10;
+        width: 300px;
+        margin-top: 10px;
+        height: 90%;
+        background-color: white;
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+        transform: translateX(-100%);
+        transition: transform 0.2s ease-in-out;
+        z-index: 10;
+        border-top-right-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+
+    #sidebar button {
+        background-color: #ff0000;
+        color: white;
+        border: none;
+        height: 40px;
+        padding: 10px 15px;
+        border-radius: 20px;
+        margin: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    #sidebar button:hover {
+        background-color: #ff0000;
+        transform: scale(0.95);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    #sidebar button:active {
+        transition: transform 0.4s ease, box-shadow 0.3s ease;
+        transform: scale(1.2);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #sidebar.visible {
+      transform: translateX(0);
+    }
+
+    #chat-container.blurred #chat-messages {
+      filter: blur(5px);
+    }
+
+    .options a{
+        text-decoration: none;
+        color: rgb(0, 128, 255);
+    }
+    .options a:hover{
+        font-weight: bold;
+    }
+    .options a:active{
+        color: rgb(0, 69, 139);
+    }
+    .options{
+        padding: 5px;
+        margin: 15px;
+        border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+        <div id="header">
+            <button id="menu-btn">☰</button>
+            <h1>BabyChat</h1>
+            <button id="profile">👶🏻</button>
+        </div>
+
+        <div id="chat-container">
+            <div id="chat-messages">
+                <div class="message user-message">¡Hola!</div>
+                <div class="message bot-message">¡Hola! ¿Cómo puedo ayudarte? c:</div>
+            </div>
+
+            <div id="message-input">
+                <input id="message-text" type="text" placeholder="Escribe tu menssje...">
+                <button id="send-btn">Enviar</button>
+            </div>
+        </div>
+
+        <div id="sidebar">
+            <div style="padding: 20px;">
+                <div style="justify-content: space-between; display: flex;">
+                    <h2>Menú</h2>
+                    <button id="close-sidebar">Cerrar</button>
+                </div>
+                <ul>
+                <li class="options"><a href="#">👣 Peso</a></li>
+                <li class="options"><a href="#">📏 Estatura</a></li>
+                <li class="options"><a href="#">⚖️ IMC</a></li>
+                <li class="options"><a href="#">💉 Vacunación</a></li>
+                <li class="options"><a href="#">💬 Chats</a></li>
+                </ul>
+            </div>
+        </div>
+  </div>
+</body>
+</html>
